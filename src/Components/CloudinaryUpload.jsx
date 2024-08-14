@@ -39,7 +39,7 @@ const CloudinaryUpload = () => {
   return (
     <div>
       <input type="file" onChange={handleImageChange} />
-      <button onClick={handleUpload}>Upload Image</button>
+      <button className="file-input file-input-bordered w-full max-w-xs" onClick={handleUpload}>Upload Image</button>
       {imageUrl && <img src={imageUrl} alt="Uploaded" />}
     </div>
   );
