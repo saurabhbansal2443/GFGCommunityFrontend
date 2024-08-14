@@ -1,2 +1,3 @@
-let baseURL = "http://localhost:8000"
-let userURL =  `${baseURL}/users`
+
+export let baseURL = "http://localhost:8000"
+export let userURL =  `${baseURL}/users`

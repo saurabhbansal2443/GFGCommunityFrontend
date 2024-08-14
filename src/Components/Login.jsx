@@ -1,10 +1,17 @@
 import React, { useState } from "react";
+import {useNavigate } from "react-router-dom"
 import { useFormik } from "formik";
 import { loginSchema, signupSchema } from "../Utility/ValidationSchema";
-import axios from 'axios'
+import axios from "axios";
+
+import { userURL } from "../Utility/Constant";
 
 const Login = () => {
   const [isSignup, setIsSignup] = useState(false);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  let navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       userName: "",
@@ -12,9 +19,34 @@ const Login = () => {
       password: "",
     },
     validationSchema: isSignup ? signupSchema : loginSchema,
-    onSubmit: (values) => {
-      
-      formik.resetForm()
+    onSubmit: async (values) => {
+      try {
+        let { email, userName, password } = values;
+        setError(null);
+        setLoading(true);
+
+        let response = await axios.post(
+          `${userURL}/${isSignup ? "signup" : "login"}`,
+          { email, userName, password },
+          {
+            headers: { "Content-type": "application/json" },
+            withCredentials: true,
+          }
+        );
+
+        console.log(response);
+
+        if (response?.data?.result == true) {
+          navigate("/community");
+          formik.resetForm();
+        } else {
+          setError(response?.data?.message);
+        }
+        setLoading(false);
+      } catch (err) {
+        setLoading(false);
+        setError(err.message);
+      }
     },
   });
 
@@ -27,14 +59,17 @@ const Login = () => {
             Connect with professionals and grow your network
           </h1>
           <p className="mb-6 text-sm lg:text-base">
-            Join our platform to connect, share, and grow your career with like-minded professionals.
+            Join our platform to connect, share, and grow your career with
+            like-minded professionals.
           </p>
         </div>
 
         {/* Right Section */}
         <div className="w-full lg:w-1/2 bg-[#DBE2EF] flex flex-col justify-center p-8 lg:p-12">
           <h2 className="text-lg font-medium mb-8 text-gray-500">
-            {isSignup ? "Sign up to connect with professionals" : "Login to the community world"}
+            {isSignup
+              ? "Sign up to connect with professionals"
+              : "Login to the community world"}
           </h2>
           <form onSubmit={formik.handleSubmit}>
             {isSignup && (
@@ -50,7 +85,9 @@ const Login = () => {
                   aria-label="Full Name"
                 />
                 {formik.touched.userName && formik.errors.userName && (
-                  <div className="text-red-600 text-sm mt-1">{formik.errors.userName}</div>
+                  <div className="text-red-600 text-sm mt-1">
+                    {formik.errors.userName}
+                  </div>
                 )}
               </div>
             )}
@@ -66,7 +103,9 @@ const Login = () => {
                 aria-label="Email Address"
               />
               {formik.touched.email && formik.errors.email && (
-                <div className="text-red-600 text-sm mt-1">{formik.errors.email}</div>
+                <div className="text-red-600 text-sm mt-1">
+                  {formik.errors.email}
+                </div>
               )}
             </div>
             <div className="mb-6">
@@ -81,22 +120,31 @@ const Login = () => {
                 aria-label="Password"
               />
               {formik.touched.password && formik.errors.password && (
-                <div className="text-red-600 text-sm mt-1">{formik.errors.password}</div>
+                <div className="text-red-600 text-sm mt-1">
+                  {formik.errors.password}
+                </div>
               )}
             </div>
             <button
               type="submit"
               className="bg-[#3F72AF] text-white w-full py-3 rounded hover:bg-[#112D4E] transition-colors"
             >
-              {isSignup ? "Join Now" : "Log in"}
+              {loading ? <span className="loading loading-bars loading-md"></span> : isSignup ? "Join Now" : "Log in"}
             </button>
+            { error &&  (
+                <div className="text-red-600 text-sm mt-1">
+                  {error}
+                </div>
+              )}
           </form>
           <div className="text-center mt-4">
             <p
               onClick={() => setIsSignup(!isSignup)}
               className="text-gray-500 hover:underline cursor-pointer"
             >
-              {isSignup ? "Already have an account? Login" : "New to the community? Sign Up"}
+              {isSignup
+                ? "Already have an account? Login"
+                : "New to the community? Sign Up"}
             </p>
           </div>
         </div>
