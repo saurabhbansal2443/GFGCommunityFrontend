@@ -1,20 +1,24 @@
 import React, { useState } from "react";
-import profileDp from "../../assets/images.jpeg"
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+
 
 const FeedPostInput = () => {
   const [content, setContent] = useState("");
+  let user = useSelector((store)=> store.user.user );
+  let {userName , profilePicture , email } = user ;
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md mb-6">
       <div className="flex items-center mb-4">
         <img
-          src={profileDp}
+          src={profilePicture}
           alt="Profile"
           className="w-12 h-12 rounded-full"
         />
         <div className="ml-4">
-          <p className="font-semibold">Saurabh</p>
-          <p className="text-sm text-gray-500">Manage settings</p>
+          <p className="font-semibold">{userName}</p>
+          <Link to="/community/profile" className="text-sm text-gray-500">view profile </Link>
         </div>
       </div>
 

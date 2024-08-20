@@ -1,4 +1,4 @@
-import React, { Children } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
@@ -6,6 +6,9 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./Components/Login.jsx";
 import Home from "./Components/Home.jsx";
 import Profile from "./Components/Profile.jsx";
+import AppStore from "./Store/appStore.js";
+import {Provider} from 'react-redux'
+import AuthWrapper from "./Components/AuthWrapper.jsx";
 
 let AppRouter = createBrowserRouter([
   {
@@ -14,7 +17,7 @@ let AppRouter = createBrowserRouter([
   },
   {
     path: "/community",
-    element: <App></App>,
+    element:<AuthWrapper> <App></App> </AuthWrapper>,
     children: [
       {
         path: "/community",
@@ -29,7 +32,9 @@ let AppRouter = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
+  <Provider store={AppStore}>
   <RouterProvider router={AppRouter}>
     <App />
   </RouterProvider>
+  </Provider>
 );
