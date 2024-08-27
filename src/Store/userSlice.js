@@ -11,9 +11,15 @@ const userSlice = createSlice({
         },
         deleteUser : (state  ) => {
             state.user = null;  
+        },
+        updateUserName : (state , action )=> {
+            state.user.userName = action.payload; 
+        },
+        updateProfilePicture : (state , action )=> {
+            state.user.profilePicture = action.payload; 
         }
     }
 })
 
-export const {addUser , deleteUser } = userSlice.actions ;
+export const {addUser , deleteUser , updateProfilePicture ,updateUserName } = userSlice.actions ;
 export default userSlice.reducer ;

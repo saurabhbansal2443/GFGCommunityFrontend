@@ -1,18 +1,24 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
+
 
 const ProfileStats = () => {
+  let user = useSelector((store)=> store.user.user);
+  let {followerCount,
+    followingCount,
+    blogCount} = user;
   return (
     <div className="bg-[#3F72AF] p-4 text-center text-white grid grid-cols-3">
       <div>
-        <p className="text-xl font-semibold">253</p>
-        <p className="text-gray-300">Photos</p>
+        <p className="text-xl font-semibold">{blogCount}</p>
+        <p className="text-gray-300">Post</p>
       </div>
       <div>
-        <p className="text-xl font-semibold">1026</p>
+        <p className="text-xl font-semibold">{followerCount}</p>
         <p className="text-gray-300">Followers</p>
       </div>
       <div>
-        <p className="text-xl font-semibold">478</p>
+        <p className="text-xl font-semibold">{followingCount}</p>
         <p className="text-gray-300">Following</p>
       </div>
     </div>

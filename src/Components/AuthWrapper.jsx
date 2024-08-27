@@ -33,11 +33,7 @@ const AuthWrapper = ({ children }) => {
   };
 
   useEffect(() => {
-    if(!user ){
     authenticateUser();
-    }else{
-        setLoading(false);
-    }
   }, []);
 
   if (isLoading) {

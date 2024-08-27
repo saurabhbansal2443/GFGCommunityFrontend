@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import userDp from "../../assets/images.jpeg"
 
 
 const FeedPostInput = () => {
@@ -12,7 +13,7 @@ const FeedPostInput = () => {
     <div className="bg-white p-6 rounded-lg shadow-md mb-6">
       <div className="flex items-center mb-4">
         <img
-          src={profilePicture}
+          src={profilePicture!=null ? profilePicture :  userDp}
           alt="Profile"
           className="w-12 h-12 rounded-full"
         />
